@@ -1,0 +1,48 @@
+
+services:
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: charisma_design_task
+    restart: unless-stopped
+    ports:
+      - "8000:80"
+    volumes:
+      - .:/var/www/html
+    depends_on:
+      - postgres
+      - redis
+    networks:
+      - charisma_design_task_network
+
+  postgres:
+    image: postgres:15
+    container_name: charisma_design_task_postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: charisma_design_task_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: secret
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - charisma_design_task_network
+
+  redis:
+    image: redis:alpine
+    container_name: charisma_design_task_redis
+    restart: unless-stopped
+    ports:
+      - "6380:6379"
+    networks:
+      - charisma_design_task_network
+
+networks:
+  charisma_design_task_network:
+
+volumes:
+  postgres_data:
