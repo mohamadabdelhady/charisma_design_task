@@ -19,7 +19,7 @@ return new class extends Migration
             $table->decimal('price');
             $table->integer('stock_quantity');
             $table->integer('low_stock_threshold')->default(10);
-            $table->enum('status',['active','inactive','discontinued']);
+            $table->enum('status', ['active', 'inactive', 'discontinued']);
             $table->softDeletes();
             $table->timestamps();
         });

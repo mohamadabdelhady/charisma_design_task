@@ -9,8 +9,8 @@ Route::get('/user', function (Request $request) {
 })->middleware('auth:sanctum');
 
 Route::middleware('throttle:60,1')->group(function () {
-Route::resource('products',ProductController::class)->except(['create','edit']);
+    Route::post('products/{product}/stock', [ProductController::class, 'adjustStock']);
+    Route::get('products/low-stock', [ProductController::class, 'listProductBelowThreshhold']);
 
-Route::post('products/{id}/stock',[ProductController::class,'adjustStock']);
-Route::get('products/low-stock',[ProductController::class,'listProductBelowThreshhold']);
+    Route::resource('products', ProductController::class)->except(['create', 'edit']);
 });

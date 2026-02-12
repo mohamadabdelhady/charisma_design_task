@@ -2,25 +2,38 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Str;
 
 class Product extends Model
 {
-    use SoftDeletes;
+    use HasFactory,SoftDeletes;
 
     protected $fillable = [
-    'sku',
-    'name',
-    'description',
-    'price',
-    'stock_quantity',
-    'low_stock_threshold',
-    'status',
+        'sku',
+        'name',
+        'description',
+        'price',
+        'stock_quantity',
+        'low_stock_threshold',
+        'status',
     ];
 
-    public function getProductBelowThreshold()
+    protected $keyType = 'string';
+
+    public $incrementing = false;
+
+    public static function booted()
     {
-       return $this->where('stock_quantity','<','low_stock_threshold');
+        static::creating(function ($model) {
+            $model->id = Str::uuid();
+        });
+    }
+
+    public static function getProductBelowThreshold()
+    {
+        return self::whereColumn('stock_quantity', '<', 'low_stock_threshold')->get();
     }
 }
