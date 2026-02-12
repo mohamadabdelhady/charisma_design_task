@@ -73,7 +73,7 @@ class ProductController extends Controller
 
         Cache::tags('products')->flush();
 
-        return response()->json(['message' => 'Product deleted successfully'], 204);
+        return response()->json([], 204);
     }
 
     public function adjustStock(Product $product, Request $request)

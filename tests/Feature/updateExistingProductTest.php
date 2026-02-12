@@ -8,7 +8,7 @@ uses(RefreshDatabase::class);
 it('update an existing product', function () {
     $product = Product::factory()->create();
 
-    $response = $this->patchJson("/api/products/{$product->id}", [
+    $response = $this->putJson("/api/products/{$product->id}", [
         'sku' => $product->sku,
         'description' => $product->description,
         'stock_quantity' => $product->stock_quantity,
